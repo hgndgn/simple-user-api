@@ -6,13 +6,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "_USER")
+@Table(name = "USER_")
 public class User {
 
     @Id
     private Integer id;
 
-    @Column()
+    @Column
     private String name;
     @Column
     private String email;
