@@ -13,7 +13,7 @@ public class User {
     private Integer id;
 
     @Column
-    private String name;
+    private String username;
     @Column
     private String email;
     @Column
@@ -23,12 +23,12 @@ public class User {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
