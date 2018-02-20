@@ -2,13 +2,13 @@ package api.user.controller;
 
 import api.user.model.User;
 import api.user.service.UserService;
-import org.omg.CORBA.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class UserCtrl {
 
     @Autowired
