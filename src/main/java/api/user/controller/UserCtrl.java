@@ -9,37 +9,33 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/users")
 public class UserCtrl {
 
     @Autowired
     private UserService userService;
 
-    @RequestMapping("/")
-    public String greeting() {
-        return "Hello!\nGo to '/users' to see all users\n";
-    }
-
-    @RequestMapping("/users")
+    @RequestMapping
     public List<User> getAllUsers() {
         return this.userService.getAll();
     }
 
-    @RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public User getUser(@PathVariable final Integer id) {
         return this.userService.get(id);
     }
 
-    @RequestMapping(value = "/users", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public void addUser(@RequestBody final User user) {
         this.userService.save(user);
     }
 
-    @RequestMapping(value = "/users/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public void updateUser(@RequestBody final User user) {
         this.userService.save(user);
     }
 
-    @RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     public void addUser(@PathVariable final Integer id) {
         this.userService.delete(id);
     }
