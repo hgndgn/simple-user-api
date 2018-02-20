@@ -12,7 +12,7 @@ public class User {
     @Id
     private Integer id;
 
-    @Column
+    @Column(unique = true)
     private String username;
     @Column
     private String email;
