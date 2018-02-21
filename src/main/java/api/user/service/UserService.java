@@ -17,8 +17,12 @@ public class UserService {
         return this.userRepository.findAll();
     }
 
-    public User get(Integer id) {
+    public User getById(Integer id) {
         return this.userRepository.findOne(id);
+    }
+
+    public User getByUsername(String username) {
+        return this.userRepository.findUserByUsername(username);
     }
 
     public void save(User user) {
