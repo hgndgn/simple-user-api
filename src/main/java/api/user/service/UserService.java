@@ -29,7 +29,11 @@ public class UserService {
         this.userRepository.save(user);
     }
 
-    public void delete(Integer id) {
+    public void deleteById(Integer id) {
         this.userRepository.delete(id);
+    }
+
+    public void deleteByUsername(String username) {
+        this.userRepository.deleteUserByUsername(username);
     }
 }
