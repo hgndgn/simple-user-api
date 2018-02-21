@@ -30,7 +30,7 @@ public class UserCtrl {
         this.userService.save(user);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+    @RequestMapping(value= "/{user.id}", method = RequestMethod.POST, consumes = "application/json")
     public void updateUser(@RequestBody final User user) {
         this.userService.save(user);
     }
