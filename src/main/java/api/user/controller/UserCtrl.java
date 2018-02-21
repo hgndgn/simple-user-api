@@ -5,10 +5,10 @@ import api.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/users")
 public class UserCtrl {
 
@@ -20,9 +20,15 @@ public class UserCtrl {
         return this.userService.getAll();
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/{id}")
     public User getUser(@PathVariable final Integer id) {
-        return this.userService.get(id);
+        return this.userService.getById(id);
+    }
+
+    @GetMapping(value = "/{username}", produces = "application/json")
+    public User getUserByUsername(@PathVariable String username) {
+        User u = this.userService.getByUsername(username);
+        return u;
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -30,8 +36,13 @@ public class UserCtrl {
         this.userService.save(user);
     }
 
-    @RequestMapping(value= "/{user.id}", method = RequestMethod.POST, consumes = "application/json")
-    public void updateUser(@RequestBody final User user) {
+    @RequestMapping(value = "/{user.id}", method = RequestMethod.PUT, consumes = "application/json")
+    public void updateUserById(@RequestBody final User user) {
+        this.userService.save(user);
+    }
+
+    @RequestMapping(value = "/{user.username}", method = RequestMethod.PUT)
+    public void updateUserByUsername(@RequestBody final User user) {
         this.userService.save(user);
     }
 
