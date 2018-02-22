@@ -29,19 +29,9 @@ public class UserCtrl {
         this.userService.save(user);
     }
 
-    @RequestMapping(value = "/{user.id}", method = RequestMethod.PUT, consumes = "application/json")
-    public void updateById(@RequestBody User user) {
-        this.userService.save(user);
-    }
-
     @RequestMapping(value = "/{user.username}", method = RequestMethod.PUT)
     public void updateUserByUsername(@RequestBody User user) {
         this.userService.save(user);
-    }
-
-    @DeleteMapping(value = "/{id}")
-    public void deleteUserById(@PathVariable Integer id) {
-        this.userService.deleteById(id);
     }
 
     @DeleteMapping

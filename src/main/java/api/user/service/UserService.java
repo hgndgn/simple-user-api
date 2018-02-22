@@ -17,20 +17,12 @@ public class UserService {
         return this.userRepository.findAll();
     }
 
-    public User getById(Integer id) {
-        return this.userRepository.findOne(id);
-    }
-
     public User getByUsername(String username) {
         return this.userRepository.findUserByUsername(username);
     }
 
     public void save(User user) {
         this.userRepository.save(user);
-    }
-
-    public void deleteById(Integer id) {
-        this.userRepository.delete(id);
     }
 
     public void deleteByUsername(String username) {
