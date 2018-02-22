@@ -15,27 +15,22 @@ public class UserCtrl {
     private UserService userService;
 
     @RequestMapping
-    public List<User> getAllUsers() {
+    public List<User> getAll() {
         return this.userService.getAll();
     }
 
-    @GetMapping(value = "/{id}")
-    public User getUser(@PathVariable Integer id) {
-        return this.userService.getById(id);
-    }
-
     @GetMapping(value = "/{username}", produces = "application/json")
-    public User getUserByUsername(@PathVariable String username) {
+    public User getByUsername(@PathVariable String username) {
         return this.userService.getByUsername(username);
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public void addUser(@RequestBody User user) {
+    public void add(@RequestBody User user) {
         this.userService.save(user);
     }
 
     @RequestMapping(value = "/{user.id}", method = RequestMethod.PUT, consumes = "application/json")
-    public void updateUserById(@RequestBody User user) {
+    public void updateById(@RequestBody User user) {
         this.userService.save(user);
     }
 
