@@ -29,13 +29,19 @@ public class UserCtrl {
         this.userService.save(user);
     }
 
-    @RequestMapping(value = "/{user.username}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{user.username}", method = RequestMethod.PUT, consumes = "application/json")
     public void updateUserByUsername(@RequestBody User user) {
         this.userService.save(user);
     }
 
-    @DeleteMapping
-    public void deleteUserByUsername(@RequestParam("username") String username) {
+    @RequestMapping(value = "/{username}", method = RequestMethod.DELETE)
+    public void deleteUserByUsername(@PathVariable String username) {
         this.userService.deleteByUsername(username);
     }
+
+    // also works
+//    @DeleteMapping
+//    public void deleteUserByUsername(@RequestParam("username") String username) {
+//        this.userService.deleteByUsername(username);
+//    }
 }
