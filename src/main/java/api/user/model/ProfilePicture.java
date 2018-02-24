@@ -3,21 +3,21 @@ package api.user.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "PROF_PICTURE")
+@Table(name = "PROFILE_PICTURE")
 public class ProfilePicture {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column
+    @Column(name = "NAME_")
     private String name;
 
-    @Column
+    @Column(name = "TYPE_")
     private String type;
 
     @Lob
-    @Column
+    @Column(name = "DATA_")
     private byte[] data;
 
     public Integer getId() {
