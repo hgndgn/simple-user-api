@@ -19,12 +19,16 @@ public class User {
     @Column
     private String password;
 
-    @Lob
-    @Column
-    private byte[] pic;
+    @OneToOne
+    @JoinColumn(name = "PROFILE_PIC")
+    private Integer picId;
 
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -51,11 +55,11 @@ public class User {
         this.password = password;
     }
 
-    public byte[] getPic() {
-        return pic;
+    public Integer getPicId() {
+        return picId;
     }
 
-    public void setPic(byte[] pic) {
-        this.pic = pic;
+    public void setPicId(Integer picId) {
+        this.picId = picId;
     }
 }
