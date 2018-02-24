@@ -12,10 +12,16 @@ public class User {
 
     @Column(unique = true)
     private String username;
+
     @Column
     private String email;
+
     @Column
     private String password;
+
+    @Lob
+    @Column
+    private byte[] pic;
 
     public Integer getId() {
         return id;
@@ -43,5 +49,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public byte[] getPic() {
+        return pic;
+    }
+
+    public void setPic(byte[] pic) {
+        this.pic = pic;
     }
 }
