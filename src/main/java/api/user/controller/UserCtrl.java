@@ -1,9 +1,12 @@
 package api.user.controller;
 
 import api.user.model.User;
+import api.user.model.UserPhoto;
+import api.user.repository.PhotoRepository;
 import api.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -13,6 +16,9 @@ public class UserCtrl {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PhotoRepository photoRepository;
 
     @RequestMapping
     public List<User> getAll() {
@@ -24,9 +30,19 @@ public class UserCtrl {
         return this.userService.getByUsername(username);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public void add(@RequestBody User user) {
-        this.userService.save(user);
+    @RequestMapping(value="/add-user", method = RequestMethod.POST)
+    public void add(@RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("file") MultipartFile file) {
+        UserPhoto photo = PhotoUtil.setPhotoData(file);
+
+        if (photo != null) {
+            photo = this.photoRepository.save(photo);
+
+            User user = new User();
+            user.setUsername(username);
+            user.setEmail(email);
+            user.setPicture(photo);
+            this.userService.save(user);
+        }
     }
 
     @RequestMapping(value = "/{user.username}", method = RequestMethod.PUT, consumes = "application/json")
