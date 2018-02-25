@@ -3,8 +3,8 @@ package api.user.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "PROFILE_PICTURE")
-public class ProfilePicture {
+@Table(name = "USER_PHOTO")
+public class UserPhoto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

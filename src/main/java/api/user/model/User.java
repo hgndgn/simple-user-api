@@ -20,8 +20,8 @@ public class User {
     private String password;
 
     @OneToOne
-    @JoinColumn(name = "PIC")
-    private ProfilePicture picture;
+    @JoinColumn(name = "PHOTO")
+    private UserPhoto picture;
 
     public Integer getId() {
         return id;
@@ -55,11 +55,11 @@ public class User {
         this.password = password;
     }
 
-    public ProfilePicture getPicture() {
+    public UserPhoto getPicture() {
         return picture;
     }
 
-    public void setPicture(ProfilePicture picture) {
+    public void setPicture(UserPhoto picture) {
         this.picture = picture;
     }
 }
