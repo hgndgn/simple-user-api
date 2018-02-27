@@ -1,6 +1,9 @@
 package api.user.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.persistence.*;
+import java.io.IOException;
 
 @Entity
 @Table(name = "USER_")
@@ -70,5 +73,14 @@ public class User {
                 "\nEmail: " + email +
                 "\nPassword: " + password +
                 "\nPhoto: " + photo.getId();
+    }
+
+    public static User parse(String from, User to) throws IOException {
+        User u = new ObjectMapper().readValue(from, User.class);
+        to.setUsername(u.getUsername());
+        to.setEmail(u.getEmail());
+        to.setPassword(u.getPassword());
+//        retUser.setPhoto(u.getPhoto());
+        return to;
     }
 }
