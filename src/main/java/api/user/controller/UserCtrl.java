@@ -45,18 +45,20 @@ public class UserCtrl {
     }
 
     @RequestMapping(value = "/{jsonUser.username}", method = RequestMethod.PUT)
-    public void update(@RequestPart("jsonUser") String jsonUser, @RequestParam("file") MultipartFile file) throws Exception {
+    public void update(@RequestPart("jsonUser") String jsonUser, @RequestParam(value = "file", required = false) MultipartFile file) throws Exception {
         String username = new ObjectMapper().readValue(jsonUser, User.class).getUsername();
         User loadUser = this.userService.getByUsername(username);
-        final Integer photoId = loadUser.getPhoto().getId();
 
-        UserPhoto photo = this.photoRepository.findOne(photoId);
-        photo.setType(file.getContentType());
-        photo.setData(file.getBytes());
-        photo = this.photoRepository.save(photo);
-        loadUser.setPhoto(photo);
-
-        this.userService.save(loadUser);
+        User parsedUser = User.parse(jsonUser, loadUser);
+        if (file != null) {
+            final Integer photoId = parsedUser.getPhoto().getId();
+            UserPhoto photo = this.photoRepository.findOne(photoId);
+            photo.setType(file.getContentType());
+            photo.setData(file.getBytes());
+            photo = this.photoRepository.save(photo);
+            parsedUser.setPhoto(photo);
+        }
+        this.userService.save(parsedUser);
     }
 
     @RequestMapping(value = "/{username}", method = RequestMethod.DELETE)
