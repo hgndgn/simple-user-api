@@ -13,13 +13,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(unique = true)
+    @Column(unique = true, updatable = false, nullable = false)
     private String username;
 
-    @Column
+    @Column(nullable = false)
     private String email;
 
-    @Column
+    @Column(nullable = false)
     private String password;
 
     @OneToOne
@@ -80,7 +80,6 @@ public class User {
         to.setUsername(u.getUsername());
         to.setEmail(u.getEmail());
         to.setPassword(u.getPassword());
-//        retUser.setPhoto(u.getPhoto());
         return to;
     }
 }
