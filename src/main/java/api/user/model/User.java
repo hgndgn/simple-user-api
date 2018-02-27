@@ -62,4 +62,13 @@ public class User {
     public void setPhoto(UserPhoto photo) {
         this.photo = photo;
     }
+
+    @Override
+    public String toString() {
+        return "Id: " + id +
+                "\nUsername: " + username +
+                "\nEmail: " + email +
+                "\nPassword: " + password +
+                "\nPhoto: " + photo.getId();
+    }
 }
