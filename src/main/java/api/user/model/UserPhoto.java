@@ -1,6 +1,7 @@
 package api.user.model;
 
 import javax.persistence.*;
+import java.util.Arrays;
 
 @Entity
 @Table(name = "USER_PHOTO")
@@ -39,5 +40,12 @@ public class UserPhoto {
 
     public void setData(byte[] data) {
         this.data = data;
+    }
+
+    @Override
+    public String toString() {
+        return "Id: " + id +
+                "\nData: " + Arrays.toString(data) +
+                "\nType: " + type;
     }
 }
