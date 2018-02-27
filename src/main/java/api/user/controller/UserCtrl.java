@@ -4,10 +4,12 @@ import api.user.model.User;
 import api.user.model.UserPhoto;
 import api.user.repository.PhotoRepository;
 import api.user.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -30,34 +32,35 @@ public class UserCtrl {
         return this.userService.getByUsername(username);
     }
 
-    @RequestMapping(value="/add-user", method = RequestMethod.POST)
-    public void add(@RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("file") MultipartFile file) {
-        UserPhoto photo = PhotoUtil.setPhotoData(file);
+    @RequestMapping(value = "/add-user", method = RequestMethod.POST)
+    public void add(String jsonUser, @RequestParam("file") MultipartFile file) throws IOException {
+        User user = new ObjectMapper().readValue(jsonUser, User.class);
+        UserPhoto photo = new UserPhoto();
 
-        if (photo != null) {
-            photo = this.photoRepository.save(photo);
-
-            User user = new User();
-            user.setUsername(username);
-            user.setEmail(email);
-            user.setPicture(photo);
-            this.userService.save(user);
-        }
+        photo.setData(file.getBytes());
+        photo.setType(file.getContentType());
+        photo = this.photoRepository.save(photo);
+        user.setPhoto(photo);
+        this.userService.save(user);
     }
 
-    @RequestMapping(value = "/{user.username}", method = RequestMethod.PUT, consumes = "application/json")
-    public void updateUserByUsername(@RequestBody User user) {
-        this.userService.save(user);
+    @RequestMapping(value = "/{jsonUser.username}", method = RequestMethod.PUT)
+    public void update(@RequestPart("jsonUser") String jsonUser, @RequestParam("file") MultipartFile file) throws Exception {
+        String username = new ObjectMapper().readValue(jsonUser, User.class).getUsername();
+        User loadUser = this.userService.getByUsername(username);
+        final Integer photoId = loadUser.getPhoto().getId();
+
+        UserPhoto photo = this.photoRepository.findOne(photoId);
+        photo.setType(file.getContentType());
+        photo.setData(file.getBytes());
+        photo = this.photoRepository.save(photo);
+        loadUser.setPhoto(photo);
+
+        this.userService.save(loadUser);
     }
 
     @RequestMapping(value = "/{username}", method = RequestMethod.DELETE)
     public void deleteUserByUsername(@PathVariable String username) {
         this.userService.deleteByUsername(username);
     }
-
-    // also works
-//    @DeleteMapping
-//    public void deleteUserByUsername(@RequestParam("username") String username) {
-//        this.userService.deleteByUsername(username);
-//    }
 }
