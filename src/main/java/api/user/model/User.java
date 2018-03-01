@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.persistence.*;
 import java.io.IOException;
+import java.util.Arrays;
 
 @Entity
 @Table(name = "USER_")
@@ -22,9 +23,9 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @OneToOne
-    @JoinColumn(name = "PHOTO")
-    private UserPhoto photo;
+    @Lob
+    @Column(name = "PHOTO")
+    private byte[] photo;
 
     public Integer getId() {
         return id;
@@ -58,11 +59,11 @@ public class User {
         this.password = password;
     }
 
-    public UserPhoto getPhoto() {
+    public byte[] getPhoto() {
         return photo;
     }
 
-    public void setPhoto(UserPhoto photo) {
+    public void setPhoto(byte[] photo) {
         this.photo = photo;
     }
 
@@ -72,7 +73,7 @@ public class User {
                 "\nUsername: " + username +
                 "\nEmail: " + email +
                 "\nPassword: " + password +
-                "\nPhoto: " + photo.getId();
+                "\nPhoto: " + Arrays.toString(photo);
     }
 
     public static User parse(String from, User to) throws IOException {
