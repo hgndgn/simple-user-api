@@ -1,15 +1,15 @@
 package api.user.controller;
 
 import api.user.model.User;
-import api.user.model.UserPhoto;
-import api.user.repository.PhotoRepository;
 import api.user.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 
 @RestController
@@ -19,8 +19,6 @@ public class UserCtrl {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private PhotoRepository photoRepository;
 
     @RequestMapping
     public List<User> getAll() {
@@ -33,32 +31,36 @@ public class UserCtrl {
     }
 
     @RequestMapping(value = "/add-user", method = RequestMethod.POST)
-    public void add(String jsonUser, @RequestParam("file") MultipartFile file) throws IOException {
-        User user = new ObjectMapper().readValue(jsonUser, User.class);
-        UserPhoto photo = new UserPhoto();
+    public void add(String jsonUser, @RequestParam(value = "file", required = false) MultipartFile file) {
+        try {
+            User user = new ObjectMapper().readValue(jsonUser, User.class);
 
-        photo.setData(file.getBytes());
-        photo.setType(file.getContentType());
-        photo = this.photoRepository.save(photo);
-        user.setPhoto(photo);
-        this.userService.save(user);
+            if (file == null) {
+                final ClassPathResource res = new ClassPathResource("/image/default.png");
+                user.setPhoto(Files.readAllBytes(res.getFile().toPath()));
+            } else {
+                user.setPhoto(file.getBytes());
+            }
+            this.userService.save(user);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @RequestMapping(value = "/{jsonUser.username}", method = RequestMethod.PUT)
-    public void update(@RequestPart("jsonUser") String jsonUser, @RequestParam(value = "file", required = false) MultipartFile file) throws Exception {
-        String username = new ObjectMapper().readValue(jsonUser, User.class).getUsername();
-        User loadUser = this.userService.getByUsername(username);
+    public void update(@RequestPart("jsonUser") String jsonUser, @RequestParam(value = "file", required = false) MultipartFile file) {
+        try {
+            String username = new ObjectMapper().readValue(jsonUser, User.class).getUsername();
+            User loadUser = this.userService.getByUsername(username);
+            User parsedUser = User.parse(jsonUser, loadUser);
 
-        User parsedUser = User.parse(jsonUser, loadUser);
-        if (file != null) {
-            final Integer photoId = parsedUser.getPhoto().getId();
-            UserPhoto photo = this.photoRepository.findOne(photoId);
-            photo.setType(file.getContentType());
-            photo.setData(file.getBytes());
-            photo = this.photoRepository.save(photo);
-            parsedUser.setPhoto(photo);
+            if (file != null) {
+                parsedUser.setPhoto(file.getBytes());
+            }
+            this.userService.save(parsedUser);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        this.userService.save(parsedUser);
     }
 
     @RequestMapping(value = "/{username}", method = RequestMethod.DELETE)
