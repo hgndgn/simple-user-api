@@ -86,7 +86,7 @@ public class UserCtrl {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @RequestMapping(value = "/{username}", method = RequestMethod.DELETE)
