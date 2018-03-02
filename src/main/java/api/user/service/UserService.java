@@ -17,6 +17,10 @@ public class UserService {
         return this.userRepository.findAll();
     }
 
+    public boolean checkUserExistence(String username) {
+        return this.userRepository.checkUserExistence(username) != null;
+    }
+
     public User getByUsername(String username) {
         return this.userRepository.findUserByUsername(username);
     }
