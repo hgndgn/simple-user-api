@@ -50,7 +50,7 @@ public class UserCtrl {
             }
 
             if (file == null) {
-                final ClassPathResource res = new ClassPathResource("/image/default.IMAGE_PNG");
+                final ClassPathResource res = new ClassPathResource("/image/default.png");
                 user.setPhoto(Files.readAllBytes(res.getFile().toPath()));
             } else if (!checkImageType(file)) {
                 return new ResponseEntity(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
